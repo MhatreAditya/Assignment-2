@@ -1,0 +1,64 @@
+﻿@model CRUDinMVC.Models.ProductModel
+
+@{
+    ViewBag.Title = "Update";
+
+
+    ViewBag.FormMethod = FormMethod.Post;
+
+    var productCategories = new List<SelectListItem>();
+
+    if (ViewBag.ShowCategoryList && Model?.Categories.Any())
+    {
+        foreach (var cat in Model?.Categories)
+        {
+            productCategories.Add(new SelectListItem() { Text = cat.Name, Value = cat.Id.ToString() });
+        }
+    }
+}
+
+<h2>Update Product</h2>
+
+@using (Html.BeginForm("Update", "Default", FormMethod.Post, new { id = "myform" }))
+{
+    @*@Html.AntiForgeryToken()*@
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+
+    <div>
+
+        <label>Product Id</label>
+            @Html.TextBoxFor(m => m.Product.Pid, new { @readonly = "readonly" })
+    </div>
+    <div>
+        <label>Product Name</label>
+        @Html.TextBoxFor(m => m.Product.PName)
+    </div>
+    <div>
+        <label for="Categories">Category</label>
+        @Html.DropDownListFor(m => m.Product.Cid, productCategories, "select Category")
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+    });
+</script>
+
+
+

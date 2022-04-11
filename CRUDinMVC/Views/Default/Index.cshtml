@@ -1,0 +1,159 @@
+﻿@*@model CRUDinMVC.Models.Category*@
+
+@model  CRUDinMVC.Models.ProductCatelogManagementModel
+
+
+@{
+    ViewBag.Title = "Product Management";
+}
+
+
+
+
+<div>
+    @*<button id="btnAdd">Add New Product</button>*@
+    @Html.ActionLink("Add Product", "Create", "Default", new { area = "" }, new { @class = "navbar-brand" })
+    @Html.ActionLink("Add Category", "CreateCat", "Default", new { area = "" }, new { @class = "navbar-brand" })
+</div>
+
+<div>
+
+    <table id="tblCategoryDetails" class="categoryDetails">
+        <thead>
+            <tr>
+                <th>Category Id</th>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Categories.Any())
+            {
+                foreach (var c in Model.Categories)
+                {
+                    <tr>
+                        <td style="text-align:right">@c.Id</td>
+                        <td style="text-align:center">@c.Name</td>
+                        <td>
+                            @Html.ActionLink("Update", "UpdateCat", "Default", new { id = c.Id }, new { @class = "update-button" }) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btndeletecat" href="#" categoryId="@c.Id" onclick="DeleteCategory('@c.Id')"> Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <table id="tblProductDetails" class="productDetails">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Category Id</th>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Products.Any())
+            {
+                foreach (var p in Model.Products)
+                {
+                    <tr>
+                        <td style="text-align:right">@p.Product.Pid</td>
+                        <td style="text-align:center">@p.Product.PName</td>
+                        <td style="text-align:right">@p.Product.Cid</td>
+                        <td style="text-align:center">@p.Category.Name</td>
+                        <td>
+                            @Html.ActionLink("Update", "Update", "Default", new { id = p.Product.Pid }, new { @class = "update-button" }) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btndelete" href="#" productId="@p.Product.Pid" onclick="DeleteProduct('@p.Product.Pid')"> Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@*<div>This is test display</div>*@
+
+@*@if(Model.Products.Any())
+    {
+        foreach(var prod in Model.Products)
+        {
+            <div>PName = @prod.Product.PName</div>
+            <div>PName = @prod.Product.Pid</div>
+            <div>PName = @prod.Product.Cid</div>
+            <div>PName = @prod.Category.Id</div>
+            <div>PName = @prod.Category.Name</div>
+        }
+    }*@
+
+@*<div>Id = @Model.Id</div>
+    <div>Category = @Model.Name</div>*@
+@*<script src="~/Scripts/jquery-3.4.1.min.js" type="text/javascript"></script>*@
+<link href="~/Scripts/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery.min1.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.dataTables.min.js" type="text/javascript" defer></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".productDetails").DataTable();
+        $(".categoryDetails").DataTable();
+    });
+
+    function DeleteProduct(productId) {
+
+        $.ajax({
+            url: '@Url.Action("DeleteProduct", "Default")',
+            type: 'Post',
+            data: { 'productId': productId },
+            dataType: "json",
+            traditional: true,
+
+            success: function (result) {
+                window.location.reload(true);
+            },
+            error: function (result) {
+
+            }
+        });
+    }
+
+    function DeleteCategory(catId) {
+
+        $.ajax({
+            url: '@Url.Action("DeleteCategory", "Default")',
+            type: 'Post',
+            data: { 'catId': catId },
+            dataType: "json",
+            traditional: true,
+
+            success: function (result) {
+                window.location.reload(true);
+            },
+            error: function (result) {
+
+            }
+        });
+    }
+
+</script>
+
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    .update-button {
+        font-family: courier;
+        font-size: 100%;
+    }
+</style>

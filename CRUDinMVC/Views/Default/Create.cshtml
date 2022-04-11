@@ -1,0 +1,88 @@
+﻿@model CRUDinMVC.Models.ProductModel
+
+@{
+    ViewBag.Title = "Create";
+    ViewBag.FormMethod = FormMethod.Post;
+
+    var productCategories = new List<SelectListItem>();
+
+    if (ViewBag.ShowCategoryList && Model.Categories.Any())
+    {
+        foreach (var cat in Model?.Categories)
+        {
+            productCategories.Add(new SelectListItem() { Text = cat.Name, Value = cat.Id.ToString() });
+        }
+    }
+}
+
+<h2>Create Product</h2>
+
+@using (Html.BeginForm("Create", "Default", FormMethod.Post, new { id = "myform" }))
+{
+    @*@Html.AntiForgeryToken()*@
+
+    <div class="form-horizontal">
+        @*<h4>ProductModel</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div>*@
+
+        @*<label>Product Id</label>
+        @Html.TextBoxFor(m => m.Product.Pid);*@
+        @*<input type="text" id="txtProdId" />*@
+    @*</div>*@
+    @*<div>
+        <label>Product Name</label>
+        @Html.TextBoxFor(m => m.Product.PName);*@
+        @*<input type="text" id="txtProdName" />*@
+    @*</div>
+    <div>
+        <label for="Categories">Category</label>*@
+       @*<input type="text" id="txtcategory" />*@
+        @*@Html.DropDownListFor(m => m.Categories, productCategories, "select Category" )
+    </div>*@
+
+    @*<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">*@
+            @*<input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>*@
+    <table>
+        <tr>
+            <td><label>Product Name </label></td>
+            <td>@Html.TextBoxFor(m => m.Product.PName)</td>
+            
+        </tr>
+        <tr>
+            <td><label for="Categories">Category</label></td>
+            <td> @Html.DropDownListFor(m => m.Product.Cid, productCategories, "select Category")</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Create" class="btn btn-default" /></td>
+        </tr>
+    </table>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+
+
+    });
+</script>
+
+<style>
+    table, tr, td {
+       
+        padding:5px;
+    }
+    
+</style>
